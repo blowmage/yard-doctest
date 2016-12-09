@@ -29,8 +29,16 @@ module YARD
       def define
         desc 'Run YARD doctests'
         task(name) do
-          command = "yard doctest #{(doctest_opts << pattern).join(' ')}"
-          exit system(command)
+          require 'yard'
+          require 'yard/cli/doctest'
+          require 'yard/doctest/example'
+          require 'yard/doctest/version'
+
+          require 'minitest'
+          require 'minitest/autorun'
+          cli = YARD::CLI::Doctest.new
+          puts 'Running Doctest...'
+          cli.run *doctest_opts
         end
       end
 
